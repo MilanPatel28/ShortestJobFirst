@@ -18,10 +18,11 @@ function createTable()
       var x = document.getElementById("inputTable").rows.length;
     }
 
-    function PrintValues() {
-      
-    }
-
+function clearCell() {
+    document.getElementById("PID").value = '';
+    document.getElementById("burstTime").value = '';
+    document.getElementById("arrivalTime").value = '';
+}
 
 function GetCellValues()
         {

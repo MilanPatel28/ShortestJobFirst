@@ -26,8 +26,9 @@
             <img class="d-block w-100" src="img2.png" alt="Second slide">
           </div>
         </div>
+        
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="carousel-control-prev-icon" aria-hidden="true" ></span>
           <span class="sr-only">Previous</span>
         </a>
         <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
@@ -35,16 +36,12 @@
           <span class="sr-only">Next</span>
         </a>
       </div>
-      <!-- <label class="switch" style="margin: 10px;">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label> -->
       <div style="margin: 20px;"></div>
         <div class="container-1">
           <form class="input-form">
             <div class="form-group">
                 <label style="color: aliceblue;">Process ID: </label>
-                <input type="number" id="PID" name="PID" value="">
+                <input type="number" id="PID" name="PID" value="" >
             </div>
             <div class="form-group">
                 <label  style="color: aliceblue;">Burst Time: </label>
@@ -55,10 +52,10 @@
                 <input type="number" id="arrivalTime" value="">
             </div>
             <div class="form-group">
-                <button class="button" type="button" onclick="createTable()">Enter values to the table</button>
+                <button class="button" type="button" onclick="createTable(), clearCell()">Enter values to the table</button>
             </div>
             <div class="form-group">
-              <button class="button" type="button" onclick="printGanttChart()">Calculate the results</button>
+              <button class="button" type="button" onclick="printGanttChart(), clearCell()">Calculate the results</button>
             </div>
           </form>
         </div>
@@ -84,7 +81,6 @@
 
 
 <h1 class="heading">Preemptive Solution</h1>
-
 <div>
   <table id="statTable">
       <tr>
