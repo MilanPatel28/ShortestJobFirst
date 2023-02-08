@@ -18,6 +18,12 @@ function createTable()
       var x = document.getElementById("inputTable").rows.length;
     }
 
+// document.addEventListener("keypress", function(){
+//     if( (processID!='') &&(burstTime!='') &&(arrivalTime!='') ) {
+        
+//     }
+// });
+
 function clearCell() {
     document.getElementById("PID").value = '';
     document.getElementById("burstTime").value = '';
@@ -46,20 +52,9 @@ function GetCellValues()
                 at.push(parseInt(table.rows[r].cells[2].innerHTML));
                 flag.push(0);
             }
-            
-            
-
-            // var toggle = document.getElementById("toggle").checked;
-            
-            // if (toggle == true)
-            //     items = preemptiveSelection(pid,at,bt,flag,bt2);
-            // else
-            //     items = nonPreemptiveSelection(pid,at,bt,flag);            
-            items = preemptiveSelection(pid,at,bt,flag,bt2);
-            items = nonPreemptiveSelection(pid,at,bt,flag); 
+            items = nonPreemptiveSelection(pid,at,bt,flag);
             return items;
           }
-
 
           function nonPreemptiveSelection(pid,at,bt,flag)
           {
@@ -72,7 +67,6 @@ function GetCellValues()
             var wt=[];
             var avgwt=0;
             var avgta=0;
-            
 
             while(true)
             {
@@ -86,14 +80,13 @@ function GetCellValues()
                     /*
                      * If i'th process arrival time <= system time and its flag=0 and burst<min 
                      * That process will be executed first 
-                     */ 
+                     */
                     var count=0;
                     if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
                         {
                             min=bt[i];
                             c=i;
-                        } 
-
+                        }
                 }
                 /* If c==n means c value can not updated because no process arrival time< system time so we increase the system time */
                 if (c==n) 
@@ -124,110 +117,39 @@ function GetCellValues()
             avgwt/=n;
             avgta/=n;
             printStat(ct,ta,wt,avgwt,avgta,pid); 
+            // generateGanttChartData(GetCellValues());
             return items;
           }
 
-
-          function preemptiveSelection(pid,at,bt,flag,bt2)
-          {
-            var n = pid.length;
+        function generateGanttChartData(data)
+        {   
+            // Data contains the processes in the required order
+            var n = data.length;
+            var finalData = [];
             var clock = 0;
-            var tot = 0;
-            var items =[];
-            var ct=[];
-            var ta=[];
-            var wt=[];
-            var avgwt=0;
-            var avgta=0;
             
-            var count2=0;
+            //console.log(n);
 
-            while (true)
+            for (var i=0; i<n; i++)
             {
-                var c = n;
-                var min =100;
-                if (tot==n)
-                {
-                    items.push(temp);
-                    break;
-                }
-                    
-                for (var i=0; i< n; i++)
-                {
-                    /*
-                     * If i'th process arrival time <= system time and its flag=0 and burst<min 
-                     * That process will be executed first 
-                     */ 
-                    var count=0;
-                    if ((at[i] <= clock) && (flag[i] == 0) && (bt[i]<min))
-                        {
-                            min=bt[i];
-                            c=i;
-                        } 
-
-                }
-                
-                // If there's no c:
-                if (c==n)
-                {
-                    clock+=1;
-                }
-                // If there's a c:
-                else
-                {
-                    bt[c]--;
-                    clock++;
-                    if (bt[c]==0)
-                    {   
-                        ct[c]=clock;
-                        flag[c]=1
-                        tot++;
+                var temp = {
+                        "category": "",
+                        "segments": [ {
+                            "start": 0,
+                            "duration": 0,
+                            "color": "#727d6f",
+                            "task": ""
+                        }, ]
                     }
+                temp.category = "Process " + (parseInt(data[i][0])).toString();
+                temp.segments[0].start = clock;
+                temp.segments[0].duration = data[i][1];
+                temp.segments[0].task = "Process " + (parseInt(data[i][0])).toString();
 
-                    if (count2==0)
-                    {
-                        //temp2 holds the previous c
-                        var temp2=c;
-                        var temp = [];
-                        temp.push(pid[c]);
-                        temp.push(1)
-                    }
-
-                    else
-                    {
-                         if (c==temp2)
-                        {
-                            temp[1]++;
-                        }
-                        else
-                        {
-                            items.push(temp);
-                            var temp =[];
-                            temp.push(pid[c]);
-                            temp.push(1);
-                            temp2=c;
-                        }
-                    }
-                    console.log(c); 
-                    count2++;
-                }
-                   
+                clock = clock + data[i][1];
+                finalData.push(temp);
             }
-
-            for(i=0;i<n;i++)
-            {
-                ta[i] = ct[i] - at[i];
-                wt[i] = ta[i] - bt2[i];
-                avgwt +=wt[i];
-                avgta +=ta[i];
-            }
-
-            avgwt/=n;
-            avgta/=n;
-
-            printStat(ct,ta,wt,avgwt,avgta,pid);            
-            return items;
-                
+            return finalData;
         }
 
         function printStat(ct,ta,wt,avgwt,avgta,pid)
@@ -238,8 +160,8 @@ function GetCellValues()
             console.log(avgwt);
             console.log(avgta);
             
-            document.getElementById("wtOutput").innerHTML=avgwt;
-            document.getElementById("taOutput").innerHTML=avgta;
+            document.getElementById("wtOutput").innerHTML=((avgwt).toFixed(5));
+            document.getElementById("taOutput").innerHTML=((avgta).toFixed(5));
             
             var table_2=document.getElementById("statTable");
         
@@ -265,3 +187,7 @@ function GetCellValues()
                 cell4.innerHTML=wt[i];
             }
         }
+
+        function printValues() {
+            generateGanttChartData(GetCellValues());
+          }
