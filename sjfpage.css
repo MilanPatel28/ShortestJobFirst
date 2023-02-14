@@ -110,6 +110,11 @@ table, tr, th, td{
 	/* margin-left: 38% */
 }
 
+#chartdiv {
+	width: 100%;
+	height: 500px;
+}
+
 /* .carousel-control-prev,
 .carousel-control-next{
 	height: 50px;
